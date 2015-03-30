@@ -15,7 +15,7 @@ This ansible task installs and configures the MySQL database server as well as a
 
 A playbook that's going to install the latest versions of all packages
 
-    ``playbook.yml``
+    playbook.yml
 
     ---
     hosts: all
@@ -31,7 +31,7 @@ A playbook that's going to install the latest versions of all packages
 
 A playbook that's going to install specific versions of packages
 
-    ``playbook.yml``
+    playbook.yml
 
     ---
     hosts:all
