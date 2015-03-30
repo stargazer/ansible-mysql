@@ -1,0 +1,8 @@
+---
+packages:
+ - mysql-server
+ - mysql-client
+ - libmysqlclient-dev 
+ - python-mysqldb
+ - automysqlbackup
+

@@ -1,0 +1,59 @@
+---
+- name: apt-get update
+  apt: update-cache=yes
+       cache_valid_time=99360
+
+- name: Install packages
+  apt: pkg={{ item }}
+  with_items: packages
+
+- name: Start MySQL and ensure autostart
+  service: name=mysql
+           state=started
+           enabled=true
+
+- name: Update MySQL root password
+  mysql_user: name=root 
+              password={{ root_password }}
+
+- name: Upload /root/.my.cnf (Required to make the password modification task idempotent)
+  template: src=my.cnf.j2 
+            dest='/root/.my.cnf' 
+            owner=root
+
+- name: Create MySQL database
+  mysql_db: name={{ database_name }} 
+            login_user=root 
+            login_password={{ root_password }} 
+            encoding=utf8 
+            collation=utf8_general_ci 
+            state=present
+
+- name: Create MySQL user and grant privileges to the database we just created
+  mysql_user: login_user=root
+              login_password={{ root_password }}
+              name={{ database_username }} 
+              password={{ database_password }} 
+              priv={{ database_name }}.*:ALL/*.*:FILE  
+              state=present
+
+- name: Setup automysqlbackup configuration
+  template: src=automysqlbackup.j2
+            dest=/etc/default/automysqlbackup
+            owner=root
+            group=root
+            mode=0644
+
+- name: Cronjob for automysqlbackup
+  cron: name="Database backup"
+        job=/usr/sbin/automysqlbackup
+        hour={{ backup_hour }}
+        minute=00
+        user=root
+
+- name: Disable the default cronjob for automysqlbackup in cron.daily which runs every morning on 06:25, by removing the x (execute) permission
+  file: path=/etc/cron.daily/automysqlbackup
+        mode=644
+
+
+
