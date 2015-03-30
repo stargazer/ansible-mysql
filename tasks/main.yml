@@ -5,6 +5,7 @@
 
 - name: Install packages
   apt: pkg={{ item }}
+       state=present
   with_items: packages
 
 - name: Start MySQL and ensure autostart
