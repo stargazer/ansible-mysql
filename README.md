@@ -1,6 +1,6 @@
 # ansible-mysql
 
-This ansible task installs and configures the MySQL database server as well as automatic backups, on any Debian server
+This ansible role installs and configures the MySQL database server as well as automatic backups, on any Debian server
 
 ## Role variables
 
@@ -44,7 +44,11 @@ A playbook that's going to install specific versions of packages
          database_username: user, 
          database_password: password, 
          backup_hour: 23, 
-         packages: [mysql-server=5.5.41-0+wheezy1, mysql-client=5.5.41-0+wheezy1, libmysqlclient-dev=5.5.41-0+wheezy1, python-mysqldb=1.2.3-2, automysqlbackup=2.6+debian.3-1]}
+         packages: [mysql-server=5.5.41-0+wheezy1, 
+                    mysql-client=5.5.41-0+wheezy1, 
+                    libmysqlclient-dev=5.5.41-0+wheezy1, 
+                    python-mysqldb=1.2.3-2, 
+                    automysqlbackup=2.6+debian.3-1]}
     
 Invoke playbook
 
